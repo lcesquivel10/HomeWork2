@@ -31,3 +31,13 @@ for i in range(1,4): ## hacer un recorrido por los datos obtenidos
     y_runge = data_runge[:,2]
     vx_runge = data_runge[:,3]
     vy_runge = data_runge[:,4]
+    
+    energy_euler = 0.5*(vx_euler**2. + vy_euler**2.) ### formula para sacar energia 
+    energy_leap = 0.5*(vx_leap**2. + vy_leap**2.)
+    energy_runge = 0.5*(vx_runge**2. + vy_runge**2.)
+
+    angular_euler = x_euler*vy_euler - y_euler*vx_euler ## para sacar el momentum 
+    angular_leap = x_leap*vy_leap - y_leap*vx_leap
+    angular_runge = x_runge*vy_runge - y_runge*vx_runge
+    
+    
