@@ -8,11 +8,6 @@ import matplotlib.pyplot as plt
 imagen1 =plt.imread("cara_03_grisesMF.png")
 imagen2 =plt.imread("cara_02_grisesMF.png")
 
-
-import numpy as np
-from numpy.fft import fft2, ifft2, fftshift, ifftshift
-from scipy import misc,ndimage
-
 #implementacion propia transformada de fourier 2D
 
 def propiaFFT2d(arr):
@@ -27,3 +22,23 @@ def propiaFFT2d(arr):
         transformada[i1]=np.array(transformada[i1])
     transformada=np.array(transformada)
     return transformada
+
+
+
+def CrearMatrizFiltroFFT(cerca,coeficienteClaridad):
+    matriz=[[-1 for i in range(170)] for j in range(254)]
+    for i in range(254):
+        for j in range(170):
+            if cerca:
+                matriz[i][j]=1-np.exp(-(pow(i-127,2)+pow(j-85,2))/coeficienteClaridad)
+            else:
+                matriz[i][j]=np.exp(-(pow(i-127,2)+pow(j-85,2))/coeficienteClaridad)
+                
+    return matriz
+
+
+
+def crearImagenHibrida(nombreImagen1,nombreIMagen2):
+   
+#misc.imsave("fusion.png", numpy.real(hybridImage(normal, sonriendo)))
+
