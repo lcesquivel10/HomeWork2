@@ -23,20 +23,27 @@ double g_1(double t, double x, double y, double vx, double vy)
 double g_2(double t, double x, double y, double vx, double vy)
 {return vy;}
 
-//Euler
+/// guia metodos https://github.com/ComputoCienciasUniandes/MetodosComputacionales/blob/master/secciones/10.ODEs/ODE.ipynb
+
+///// METODO DE EULER //////
+
+// para la velocidad
 double euler_vx(double t_n, double x_n, double y_n, double vx_n, double vy_n, double h){
     return vx_n + h*f_1(t_n,x_n,y_n,vx_n,vy_n);
 }
 double euler_vy(double t_n, double x_n, double y_n, double vx_n, double vy_n, double h){
     return vy_n + h*f_2(t_n,x_n,y_n,vx_n,vy_n);
 }
+
+/// para la posicion
 double euler_x(double t_n, double x_n, double y_n, double vx_n, double vy_n, double h){
     return x_n + h*g_1(t_n,x_n,y_n,vx_n,vy_n);
 }
 double euler_y(double t_n, double x_n, double y_n, double vx_n, double vy_n, double h){
     return y_n + h*g_2(t_n,x_n,y_n,vx_n,vy_n);
     
-//Leap-frog
+//// LEAP FROG /////
+    
 double leap_vx(double t_n, double x_n, double y_n, double vx_n, double vy_n, double vx_n_2,double h){
     return vx_n_2 + 2*h*f_1(t_n,x_n,y_n,vx_n,vy_n);
 }
@@ -49,8 +56,9 @@ double leap_x(double t_n, double x_n, double y_n, double vx_n, double vy_n, doub
 double leap_y(double t_n, double x_n, double y_n, double vx_n, double vy_n,  double y_n_2,double h){
     return y_n_2 + 2*h*g_2(t_n,x_n,y_n,vx_n,vy_n);
 }
-
-//Runge-Kutta 4
+////////////RUNGE- KUTTA 4 ////////
+    
+    
 double runge_kutta_vx(double t_n, double x_n, double y_n, double vx_n, double vy_n, double h){
     double k11 = h*g_1(t_n,x_n,y_n,vx_n,vy_n);
     double k12 = h*g_2(t_n,x_n,y_n,vx_n,vy_n);
@@ -146,6 +154,7 @@ double runge_kutta_y(double t_n, double x_n, double y_n, double vx_n, double vy_
 
 int main(void){
 
+
     int N = 20*1000;
 
     double t0 = 0;
@@ -167,6 +176,69 @@ int main(void){
     double y_runge[N];
     double vx_runge[N];
     double vy_runge[N];
+
+    x_euler[0] = 0.1163;
+    y_euler[0] = 0.9772;
+    vx_euler[0] = -6.35;
+    vy_euler[0] = 0.606;
+
+    x_leap[0] = 0.1163;
+    y_leap[0] = 0.9772;
+    vx_leap[0] = -6.35;
+    vy_leap[0] = 0.606;
+    
+    x_runge[0] = 0.1163;
+    y_runge[0] = 0.9772;
+    vx_runge[0] = -6.35;
+    vy_runge[0] = 0.606;
+
+    for(int k = 1; k < 4; k++){
+
+        dt = k*1e-3;
+
+        x_leap[1] = x_leap[0] + dt*g_1(t0,x_leap[0],y_leap[0],vx_leap[0],vy_leap[0]);
+        y_leap[1] = y_leap[0] + dt*g_2(t0,x_leap[0],y_leap[0],vx_leap[0],vy_leap[0]);
+        vx_leap[1] = vx_leap[0] + dt*f_1(t0,x_leap[0],y_leap[0],vx_leap[0],vy_leap[0]);
+        vy_leap[1] = vy_leap[0] + dt*f_2(t0,x_leap[0],y_leap[0],vx_leap[0],vy_leap[0]);
+
+        for(int i = 1; i < N; i++){
+            vx_euler[i] = euler_vx(t0+i*dt,x_euler[i-1],y_euler[i-1],vx_euler[i-1],vy_euler[i-1],dt);
+            vy_euler[i] = euler_vy(t0+i*dt,x_euler[i-1],y_euler[i-1],vx_euler[i-1],vy_euler[i-1],dt);
+            x_euler[i] = euler_x(t0+i*dt,x_euler[i-1],y_euler[i-1],vx_euler[i-1],vy_euler[i-1],dt);
+            y_euler[i] = euler_y(t0+i*dt,x_euler[i-1],y_euler[i-1],vx_euler[i-1],vy_euler[i-1],dt);
+        }
+
+        for(int i = 2; i < N; i++){
+            vx_leap[i] = leap_vx(t0+i*dt,x_leap[i-1],y_leap[i-1],vx_leap[i-1],vy_leap[i-1],vx_leap[i-2],dt);
+            vy_leap[i] = leap_vy(t0+i*dt,x_leap[i-1],y_leap[i-1],vx_leap[i-1],vy_leap[i-1],vy_leap[i-2],dt);
+            x_leap[i] = leap_x(t0+i*dt,x_leap[i-1],y_leap[i-1],vx_leap[i-1],vy_leap[i-1],x_leap[i-2],dt);
+            y_leap[i] = leap_y(t0+i*dt,x_leap[i-1],y_leap[i-1],vx_leap[i-1],vy_leap[i-1],y_leap[i-2],dt);
+        }
+
+        for(int i = 1; i < N; i++){
+            vx_runge[i] = runge_kutta_vx(t0+i*dt,x_runge[i-1],y_runge[i-1],vx_runge[i-1],vy_runge[i-1],dt);
+            vy_runge[i] = runge_kutta_vy(t0+i*dt,x_runge[i-1],y_runge[i-1],vx_runge[i-1],vy_runge[i-1],dt);
+            x_runge[i] = runge_kutta_x(t0+i*dt,x_runge[i-1],y_runge[i-1],vx_runge[i-1],vy_runge[i-1],dt);
+            y_runge[i] = runge_kutta_y(t0+i*dt,x_runge[i-1],y_runge[i-1],vx_runge[i-1],vy_runge[i-1],dt);
+        }
+
+        ofstream data_euler("data_euler_dt_"+to_string(k)+"e-3.dat");    
+        for(int i = 0; i < N; i++){
+            data_euler << t0+i*dt << '\t' << x_euler[i] << '\t' << y_euler[i] << '\t' << vx_euler[i] << '\t' << vy_euler[i] << endl;
+        }
+
+        ofstream data_leap("data_leap_dt_"+to_string(k)+"e-3.dat");    
+        for(int i = 0; i < N; i++){
+            data_leap << t0+i*dt << '\t' << x_leap[i] << '\t' << y_leap[i] << '\t' << vx_euler[i] << '\t' << vy_euler[i] << endl;
+        }
+
+        ofstream data_runge("data_runge_dt_"+to_string(k)+"e-3.dat");    
+        for(int i = 0; i < N; i++){
+            data_runge << t0+i*dt << '\t' << x_runge[i] << '\t' << y_runge[i] << '\t' << vx_euler[i] << '\t' << vy_euler[i] << endl;
+        }
+    }
+
+
 
    
     return 0;
