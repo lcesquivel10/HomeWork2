@@ -45,6 +45,7 @@ def graficarImagenes(img1,img2,nombreGuardado,titulo):
     plt.imshow(np.real(img2), cmap=cm.gray)
     f.suptitle(titulo, fontsize=13)
     f.savefig(nombreGuardado)
+    
 def crearImagenHibrida(nombreImagen1,nombreIMagen2): # funcion para imagen... usando unicamente paquetes
     # pasar las imagenes a una matriz .... https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.ndimage.imread.html
     imagen1 = ndimage.imread(nombreImagen1, flatten=True)
@@ -79,5 +80,5 @@ def crearImagenHibrida(nombreImagen1,nombreIMagen2): # funcion para imagen... us
     imagenFinal=imagenNueva1+imagenNueva2
     misc.imsave("ImHybrid.pdf", np.real(imagenFinal))
       
-
+## Imagen final
 crearImagenHibrida("cara_03_grisesMF.png","cara_02_grisesMF.png")
