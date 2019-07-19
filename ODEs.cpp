@@ -164,14 +164,14 @@ double runge_kutta_y(double t_n, double x_n, double y_n, double vx_n, double vy_
 int main(void){
 
 
-    int N = 20*1000;
+    int N = 20*1000; 
 
     double t0 = 0;
     double tf = 1;
 
     double dt;
     
-    /// definir arreglos donde se guarda data
+    /// definir arreglos donde se guarda data longitud de iterv
 
     double x_euler[N];
     double y_euler[N];
@@ -205,18 +205,18 @@ int main(void){
     vx_runge[0] = -6.35;
     vy_runge[0] = 0.606;
     
-    //// definir los dt de 1 hasta 3 para leap
+    //// definir los dt de 1 hasta 3 
 
     for(int k = 1; k < 4; k++){
 
         dt = k*1e-3;
-            /// agregar la primera posicion ( inicial ) ...el anterior 
+            /// agregar la primera posicion ( inicial ) ...el anterior (pasado)
         x_leap[1] = x_leap[0] + dt*g_1(t0,x_leap[0],y_leap[0],vx_leap[0],vy_leap[0]);
         y_leap[1] = y_leap[0] + dt*g_2(t0,x_leap[0],y_leap[0],vx_leap[0],vy_leap[0]);
         vx_leap[1] = vx_leap[0] + dt*f_1(t0,x_leap[0],y_leap[0],vx_leap[0],vy_leap[0]);
         vy_leap[1] = vy_leap[0] + dt*f_2(t0,x_leap[0],y_leap[0],vx_leap[0],vy_leap[0]);
         
-        // pasos sigueintes
+        // pasos sigueintes (futuro)
         for(int i = 1; i < N; i++){ /// h = dt 
             vx_euler[i] = euler_vx(t0+i*dt,x_euler[i-1],y_euler[i-1],vx_euler[i-1],vy_euler[i-1],dt);
             vy_euler[i] = euler_vy(t0+i*dt,x_euler[i-1],y_euler[i-1],vx_euler[i-1],vy_euler[i-1],dt);
@@ -247,7 +247,7 @@ int main(void){
         for(int i = 0; i < N; i++){
             data_leap << t0+i*dt << '\t' << x_leap[i] << '\t' << y_leap[i] << '\t' << vx_euler[i] << '\t' << vy_euler[i] << endl;
         }
-        // abre archivo donde guarda los datos de runge
+        // abre archivo donde guarda los datos de rungeO
 
         ofstream data_runge("data_runge_dt_"+to_string(k)+"e-3.dat");    
         for(int i = 0; i < N; i++){
