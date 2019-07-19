@@ -1,8 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-for i in range(1,4): ## hacer un recorrido por los datos obtenidos
-    data_euler = np.loadtxt('data_euler_dt_'+str(i)+'e-3.dat') ## cargar los datos y asignarles nombre con el dt
+for i in range(1,4): ## hacer un recorrido por los datos obtenidos... asignar nombres https://stackoverflow.com/questions/13682628/use-savefig-in-python-with-string-and-iterative-index-in-the-name.... https://es.stackoverflow.com/questions/8295/abrir-y-cerrar-un-plot-dentro-de-un-while
+    
+    data_euler = np.loadtxt('data_euler_dt_'+str(i)+'e-3.dat') ## cargar los datos y asignarles nombre con el dt 
     data_leap = np.loadtxt('data_leap_dt_'+str(i)+'e-3.dat')
     data_runge = np.loadtxt('data_runge_dt_'+str(i)+'e-3.dat')
 
