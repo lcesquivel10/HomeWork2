@@ -1,4 +1,4 @@
-prueba.tex: plots.png GenerarDatos ## prueba engaño
+prueba.tex: plots.png GenerarDatos ## prueba.tex engaño
 
 plots.png: data_euler.dat data_leap.dat data_runge.dat
 	python Plots_hw2.py
