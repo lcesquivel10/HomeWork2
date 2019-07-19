@@ -1,4 +1,4 @@
-prueba.tex: plots.png GenerarDatos
+prueba.tex: plots.png GenerarDatos ## prueba engaño
 
 plots.png: data_euler.dat data_leap.dat data_runge.dat
 	python Plots_hw2.py
@@ -9,7 +9,7 @@ plots.png: data_euler.dat data_leap.dat data_runge.dat
 a.out: ODEs.cpp
 	g++ -o a.out ODEs.cpp
        
-GenerarDatos: fourier.py
-	python3 fourier.py
+GenerarDatos: Fourier.py
+	python3 Fourier.py
     
 
