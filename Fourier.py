@@ -36,7 +36,7 @@ def crearImagenHibrida(nombreImagen1,nombreIMagen2):
     imagen1 = ndimage.imread(nombreImagen1, flatten=True)
     imagen2 = ndimage.imread(nombreIMagen2, flatten=True)
     
-    #segundo paso
+    
     #calcular la transformada de fourier de ambas imagenes
     #como es una matriz de 2 dimensiones se utiliza la funcion fft2
     #O la implementacion propia
@@ -44,25 +44,25 @@ def crearImagenHibrida(nombreImagen1,nombreIMagen2):
     transformada2=fftshift(fft2(imagen2))
     misc.imsave("transformadaImagen1.pdf", np.real(transformada1))
     misc.imsave("transformadaImagen2.pdf", np.real(transformada2))
-    #tercer paso
+    
     #Crear una matriz filtro la cual al multiplicarla por la fft nos permita cambial la claridad de la imagen
     filtro1=CrearMatrizFiltroFFT(True,1000)
     filtro2=CrearMatrizFiltroFFT(False,300)
     misc.imsave("filtro1.pdf", np.real(filtro1))
     misc.imsave("filtro2.pdf", np.real(filtro2))  
-    #cuarto paso
+    
     #multiplicar estas matrices por las transformadas
     imagenFiltrada1=filtro1*transformada1
     imagenFiltrada2=filtro2*transformada2
     misc.imsave("ImagenFiltrada1.pdf", np.real(imagenFiltrada1))
     misc.imsave("ImagenFiltrada2.pdf", np.real(imagenFiltrada2))  
-    #quinto paso
+
     #hacer la fft inversa a cada imagen para ver los cambios que hizo el filtro
     imagenNueva1=ifft2(ifftshift(imagenFiltrada1))
     imagenNueva2=ifft2(ifftshift(imagenFiltrada2))
     misc.imsave("ImagenNueva1.pdf", np.real(imagenNueva1))
     misc.imsave("ImagenNueva2.pdf", np.real(imagenNueva2))
-    #Sexto paso
+ 
     #Ya teniendo estas dos imagenes con sus filtros podemos pasar a combinarlas a una sola imagen
     imagenFinal=imagenNueva1+imagenNueva2
     misc.imsave("ImHybrid.pdf", np.real(imagenFinal))
