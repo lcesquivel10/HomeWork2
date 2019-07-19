@@ -4,32 +4,37 @@
 
 using namespace std;
 
-// defino mis funciones 
-
+// DEFINO MIS FUNCIONES  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+// despues de despejar la ecuacion salen 4: x y vx y vy
+//para x 
 double f_1(double t, double x, double y, double vx, double vy){
-    double G = 4.*M_PI*M_PI;
+    double G = 4.*M_PI*M_PI; // constante de gravitacion universal
     double M_Sol = 1.;
-    return -G*M_Sol*(x/sqrt((x*x + y*y)))/(x*x + y*y);
+    return -G*M_Sol*(x/sqrt((x*x + y*y)))/(x*x + y*y); // sobre el radio
 }
-
+// para y 
 double f_2(double t, double x, double y, double vx, double vy){
     double G = 4.*M_PI*M_PI;
     double M_Sol = 1.;
     return -G*M_Sol*(y/sqrt((x*x + y*y)))/(x*x + y*y);
 }
-
+// dx/dt=vx
 double g_1(double t, double x, double y, double vx, double vy)
 {return vx;}
+// dy/dt= vy
 double g_2(double t, double x, double y, double vx, double vy)
 {return vy;}
 
-/// guia metodos https://github.com/ComputoCienciasUniandes/MetodosComputacionales/blob/master/secciones/10.ODEs/ODE.ipynb
+/// guia para los  metodos https://github.com/ComputoCienciasUniandes/MetodosComputacionales/blob/master/secciones/10.ODEs/ODE.ipynb
 
-///// METODO DE EULER //////
+///// METODO DE EULER ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // para la velocidad
+// se hacen funciones para determinar los valores de vx vy x y y 
+// euler utiliza foward diference... y[i] = y[i-1]+h*f(x,y) aplica solo la formula 
+
 double euler_vx(double t_n, double x_n, double y_n, double vx_n, double vy_n, double h){
-    return vx_n + h*f_1(t_n,x_n,y_n,vx_n,vy_n);
+    return vx_n + h*f_1(t_n,x_n,y_n,vx_n,vy_n); // punto + el paso*funcion evaluada
 }
 double euler_vy(double t_n, double x_n, double y_n, double vx_n, double vy_n, double h){
     return vy_n + h*f_2(t_n,x_n,y_n,vx_n,vy_n);
@@ -42,10 +47,14 @@ double euler_x(double t_n, double x_n, double y_n, double vx_n, double vy_n, dou
 double euler_y(double t_n, double x_n, double y_n, double vx_n, double vy_n, double h){
     return y_n + h*g_2(t_n,x_n,y_n,vx_n,vy_n);
     
-//// LEAP FROG /////
+//// LEAP FROG ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+// central diference.... usa dos puntos: uno atras y uno adelante== 2h
+
     
 double leap_vx(double t_n, double x_n, double y_n, double vx_n, double vy_n, double vx_n_2,double h){
     return vx_n_2 + 2*h*f_1(t_n,x_n,y_n,vx_n,vy_n);
+    
 }
 double leap_vy(double t_n, double x_n, double y_n, double vx_n, double vy_n, double vy_n_2,double h){
     return vy_n_2 + 2*h*f_2(t_n,x_n,y_n,vx_n,vy_n);
@@ -56,11 +65,11 @@ double leap_x(double t_n, double x_n, double y_n, double vx_n, double vy_n, doub
 double leap_y(double t_n, double x_n, double y_n, double vx_n, double vy_n,  double y_n_2,double h){
     return y_n_2 + 2*h*g_2(t_n,x_n,y_n,vx_n,vy_n);
 }
-////////////RUNGE- KUTTA 4 ////////
-    
+////////////RUNGE- KUTTA 4to ///////////////////////////////////////////////////////////////////////////////////////////////////
+/// usa las pendientes K1 K2 K3 y K4... donde K1 = h*f(x,y) K2= h*f(x+0.5*h,y+0.5*h)+ k1  K3= h*f(x+0.5*h,y+0.5*h)+k2   K4= h*f(x+0.5*h,y+0.5*h)+k3
     
 double runge_kutta_vx(double t_n, double x_n, double y_n, double vx_n, double vy_n, double h){
-    double k11 = h*g_1(t_n,x_n,y_n,vx_n,vy_n);
+    double k11 = h*g_1(t_n,x_n,y_n,vx_n,vy_n); // h* funciones evaluadas
     double k12 = h*g_2(t_n,x_n,y_n,vx_n,vy_n);
     double k13 = h*f_1(t_n,x_n,y_n,vx_n,vy_n);
     double k14 = h*f_2(t_n,x_n,y_n,vx_n,vy_n);
@@ -80,7 +89,7 @@ double runge_kutta_vx(double t_n, double x_n, double y_n, double vx_n, double vy
     double k43 = h*f_1(t_n + h*0.5,x_n + k31, y_n + k32, vx_n + k33, vy_n + k34); 
     double k44 = h*f_2(t_n + h*0.5,x_n + k31, y_n + k32, vx_n + k33, vy_n + k34); 
 
-    return vx_n + (1./6.)*(k13 + 2.*k23 + 2.*k33 + k43);
+    return vx_n + (1./6.)*(k13 + 2.*k23 + 2.*k33 + k43); //pendiente total
 }
 double runge_kutta_vy(double t_n, double x_n, double y_n, double vx_n, double vy_n, double h){
     double k11 = h*g_1(t_n,x_n,y_n,vx_n,vy_n);
@@ -161,6 +170,8 @@ int main(void){
     double tf = 1;
 
     double dt;
+    
+    /// definir arreglos donde se guarda data
 
     double x_euler[N];
     double y_euler[N];
@@ -176,6 +187,8 @@ int main(void){
     double y_runge[N];
     double vx_runge[N];
     double vy_runge[N];
+    
+    /// las condiciones iniciales 
 
     x_euler[0] = 0.1163;
     y_euler[0] = 0.9772;
@@ -191,6 +204,8 @@ int main(void){
     y_runge[0] = 0.9772;
     vx_runge[0] = -6.35;
     vy_runge[0] = 0.606;
+    
+    //// definir los dt de 1 hasta 3 para leap
 
     for(int k = 1; k < 4; k++){
 
@@ -201,7 +216,7 @@ int main(void){
         vx_leap[1] = vx_leap[0] + dt*f_1(t0,x_leap[0],y_leap[0],vx_leap[0],vy_leap[0]);
         vy_leap[1] = vy_leap[0] + dt*f_2(t0,x_leap[0],y_leap[0],vx_leap[0],vy_leap[0]);
 
-        for(int i = 1; i < N; i++){
+        for(int i = 1; i < N; i++){ /// h = dt 
             vx_euler[i] = euler_vx(t0+i*dt,x_euler[i-1],y_euler[i-1],vx_euler[i-1],vy_euler[i-1],dt);
             vy_euler[i] = euler_vy(t0+i*dt,x_euler[i-1],y_euler[i-1],vx_euler[i-1],vy_euler[i-1],dt);
             x_euler[i] = euler_x(t0+i*dt,x_euler[i-1],y_euler[i-1],vx_euler[i-1],vy_euler[i-1],dt);
@@ -237,8 +252,6 @@ int main(void){
             data_runge << t0+i*dt << '\t' << x_runge[i] << '\t' << y_runge[i] << '\t' << vx_euler[i] << '\t' << vy_euler[i] << endl;
         }
     }
-
-
 
    
     return 0;
