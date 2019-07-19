@@ -2,7 +2,7 @@ import numpy as np
 from numpy.fft import fft2, ifft2, fftshift, ifftshift
 from scipy import misc,ndimage
 
-#implementacion propia transformada de fourier 2D
+#ixtransformada de fourier 2D
 def propiaFFT2d(arr):
     transformada=[[] for i in range(len(arr))]
     for i1 in range(len(arr)):
@@ -32,20 +32,24 @@ def CrearMatrizFiltroFFT(cerca,coeficienteClaridad):
     return matriz
 
 
-def crearImagenHibrida(nombreImagen1,nombreIMagen2):
-    #primer paso pasar las imagenes a una matriz
+def crearImagenHibrida(nombreImagen1,nombreIMagen2): # funcion para imagen... usando unicamente paquetes
+    # pasar las imagenes a una matriz .... https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.ndimage.imread.html
     imagen1 = ndimage.imread(nombreImagen1, flatten=True)
     imagen2 = ndimage.imread(nombreIMagen2, flatten=True)
     
     
     #calcular la transformada de fourier de ambas imagenes
-    #como es una matriz de 2 dimensiones se utiliza la funcion fft2
+    #como es una matriz de 2 dimensiones se utiliza la funcion fft2...https://docs.scipy.org/doc/numpy-1.15.1/reference/generated/numpy.fft.fftshift.html
     #O la implementacion propia
+    
+    # misc.imsave... scipy.. guarda arreglo como imagen
     transformada1= fftshift(fft2(imagen1))
     transformada2=fftshift(fft2(imagen2))
     misc.imsave("transformadaImagen1.pdf", np.real(transformada1))
     misc.imsave("transformadaImagen2.pdf", np.real(transformada2))
     
+    
+    # FILTROS
     #Crear una matriz filtro la cual al multiplicarla por la fft nos permita cambial la claridad de la imagen
     filtro1=CrearMatrizFiltroFFT(True,1000)
     filtro2=CrearMatrizFiltroFFT(False,300)
@@ -58,13 +62,13 @@ def crearImagenHibrida(nombreImagen1,nombreIMagen2):
     misc.imsave("ImagenFiltrada1.pdf", np.real(imagenFiltrada1))
     misc.imsave("ImagenFiltrada2.pdf", np.real(imagenFiltrada2))  
 
-    #hacer la fft inversa a cada imagen para ver los cambios que hizo el filtro
+    #INVERSA para ver los cambios que hizo el filtro... https://www.programcreek.com/python/example/61036/numpy.fft.ifftshift
     imagenNueva1=ifft2(ifftshift(imagenFiltrada1))
     imagenNueva2=ifft2(ifftshift(imagenFiltrada2))
     misc.imsave("ImagenNueva1.pdf", np.real(imagenNueva1))
     misc.imsave("ImagenNueva2.pdf", np.real(imagenNueva2))
  
-    #Ya teniendo estas dos imagenes con sus filtros podemos pasar a combinarlas a una sola imagen
+    #COMBINAR.. para tener una sola imagen
     imagenFinal=imagenNueva1+imagenNueva2
     misc.imsave("ImHybrid.pdf", np.real(imagenFinal))
     
