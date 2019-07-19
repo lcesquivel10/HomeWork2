@@ -5,7 +5,7 @@
 using namespace std;
 
 // DEFINO MIS FUNCIONES  ////////////////////////////////////////////////////////////////////////////////////////////////////////
-// despues de despejar la ecuacion salen 4: x y vx y vy
+// despues de despejar la ecuacion salen 4: x,y,vx, y, vy
 //para x 
 
 double f_1(double t, double x, double y, double vx, double vy){
@@ -13,14 +13,15 @@ double f_1(double t, double x, double y, double vx, double vy){
     double M_Sol = 1.;
     return -G*M_Sol*(x/sqrt((x*x + y*y)))/(x*x + y*y);// sobre el radio
 }
-
+// para y 
 double f_2(double t, double x, double y, double vx, double vy){
     double G = 4.*M_PI*M_PI;
     double M_Sol = 1.;
     return -G*M_Sol*(y/sqrt((x*x + y*y)))/(x*x + y*y);
 }
-
+//para vx
 double g_1(double t, double x, double y, double vx, double vy){return vx;}
+//para vy
 double g_2(double t, double x, double y, double vx, double vy){return vy;}
 /// guia para los  metodos https://github.com/ComputoCienciasUniandes/MetodosComputacionales/blob/master/secciones/10.ODEs/ODE.ipynb
 
@@ -65,14 +66,14 @@ double leap_y(double t_n, double x_n, double y_n, double vx_n, double vy_n,  dou
 /// usa las pendientes K1 K2 K3 y K4... donde K1 = h*f(x,y) K2= h*f(x+0.5*h,y+0.5*h)+ k1  K3= h*f(x+0.5*h,y+0.5*h)+k2   K4= h*f(x+0.5*h,y+0.5*h)+k3
 double runge_kutta_vx(double t_n, double x_n, double y_n, double vx_n, double vy_n, double h){
     double k11 = h*g_1(t_n,x_n,y_n,vx_n,vy_n);
-    double k12 = h*g_2(t_n,x_n,y_n,vx_n,vy_n);
+    double k12 = h*g_2(t_n,x_n,y_n,vx_n,vy_n); /// son 16 pendientes.. 4 por las del metodos y 4 para cada funcion
     double k13 = h*f_1(t_n,x_n,y_n,vx_n,vy_n);
     double k14 = h*f_2(t_n,x_n,y_n,vx_n,vy_n);
 
     double k21 = h*g_1(t_n + h*0.5,x_n + k11*0.5, y_n + k12*0.5, vx_n + k13*0.5, vy_n + k14*0.5);
     double k22 = h*g_2(t_n + h*0.5,x_n + k11*0.5, y_n + k12*0.5, vx_n + k13*0.5, vy_n + k14*0.5); 
     double k23 = h*f_1(t_n + h*0.5,x_n + k11*0.5, y_n + k12*0.5, vx_n + k13*0.5, vy_n + k14*0.5); 
-    double k24 = h*f_2(t_n + h*0.5,x_n + k11*0.5, y_n + k12*0.5, vx_n + k13*0.5, vy_n + k14*0.5); 
+    double k24 = h*f_2(t_n + h*0.5,x_n + k11*0.5, y_n + k12*0.5, vx_n + k13*0.5, vy_n + k14*0.5);  
 
     double k31 = h*g_1(t_n + h*0.5,x_n + k21*0.5, y_n + k22*0.5, vx_n + k23*0.5, vy_n + k24*0.5);
     double k32 = h*g_2(t_n + h*0.5,x_n + k21*0.5, y_n + k22*0.5, vx_n + k23*0.5, vy_n + k24*0.5); 
@@ -183,8 +184,6 @@ int main(void){
     double vy_runge[N];
     
     /// las condiciones iniciales 
-
-
 
     x_euler[0] = 0.1163;
     y_euler[0] = 0.9772;
