@@ -39,15 +39,16 @@ for i in range(1,4): ## hacer un recorrido por los datos obtenidos
     angular_euler = x_euler*vy_euler - y_euler*vx_euler ## para sacar el momentum 
     angular_leap = x_leap*vy_leap - y_leap*vx_leap
     angular_runge = x_runge*vy_runge - y_runge*vx_runge
-    
-######################################33 ORBITAS X vs Y
+
+
+    ######################################33 ORBITAS X vs Y
     plt.figure(figsize = (5,5))
     plt.plot(x_euler[:max_index],y_euler[:max_index], label = "Euler")
     plt.xlabel("X (UA)")
     plt.ylabel("Y (UA)")
     plt.title("Orbita")
     plt.legend()
-    plt.savefig("Orbita_euler_dt_"+str(i)+"e-3.png")
+    plt.savefig("XY_euler_dt_"+str(i)+"e-3.png")
 
     plt.figure(figsize = (5,5))
     plt.plot(x_leap[:max_index],y_leap[:max_index], label= "Leap Frog")
@@ -55,7 +56,7 @@ for i in range(1,4): ## hacer un recorrido por los datos obtenidos
     plt.ylabel("Y (UA)")
     plt.title("Orbita")
     plt.legend()
-    plt.savefig("Orbita_leap_dt_"+str(i)+"e-3.png")
+    plt.savefig("XY_leap_dt_"+str(i)+"e-3.png")
 
     plt.figure(figsize = (5,5))
     plt.plot(x_runge[:max_index],y_runge[:max_index], label = "Runge Kutta")
@@ -63,9 +64,82 @@ for i in range(1,4): ## hacer un recorrido por los datos obtenidos
     plt.ylabel("Y (UA)")
     plt.title("Orbita")
     plt.legend()
-    plt.savefig("Orbita_runge_dt_"+str(i)+"e-3.png")
+    plt.savefig("XY_runge_dt_"+str(i)+"e-3.png")
 
+    ###################################### VELOCIDADES
+    plt.figure(figsize = (5,5))
+    plt.plot(vx_euler[:max_index],vy_euler[:max_index], label = "Euler")
+    plt.xlabel("VX (UA/yr)")
+    plt.ylabel("VY (UA/yr)")
+    plt.title ("VX vs VY")
+    plt.legend()
+    plt.savefig("VxVy_euler_dt_"+str(i)+"e-3.png")
 
+    plt.figure(figsize = (5,5))
+    plt.plot(vx_leap[:max_index],vy_leap[:max_index], label= "Leap Frog")
+    plt.xlabel("VX (UA/yr)")
+    plt.ylabel("VY (UA/yr)")
+    plt.title ("VX vs VY")
+    plt.legend()
+    plt.savefig("VxVy_leap_dt_"+str(i)+"e-3.png")
+
+    plt.figure(figsize = (5,5))
+    plt.plot(vx_runge[:max_index],vy_runge[:max_index], label = "Runge Kutta")
+    plt.xlabel("VX (UA/yr)")
+    plt.ylabel("VY (UA/yr)")
+    plt.title ("VX vs VY")
+    plt.legend()
+    plt.savefig("VxVy_runge_dt_"+str(i)+"e-3.png")
+
+    ###################################### ENERGIA
+    plt.figure(figsize = (5,5))
+    plt.plot(t[:max_index],energy_euler[:max_index], label = "Euler")
+    plt.xlabel("Tiempo (Yr)")
+    plt.ylabel("Energia")
+    plt.title("Energia vs Tiempo")
+    plt.legend ()
+    plt.savefig("Ener_euler_dt_"+str(i)+"e-3.png")
+
+    plt.figure(figsize = (5,5))
+    plt.plot(t[:max_index],energy_leap[:max_index], label= "Leap Frog")
+    plt.xlabel("Tiempo (Yr)")
+    plt.ylabel("Energia")
+    plt.title("Energia vs Tiempo")
+    plt.legend ()
+    plt.savefig("Ener_leap_dt_"+str(i)+"e-3.png")
+
+    plt.figure(figsize = (5,5))
+    plt.plot(t[:max_index],energy_runge[:max_index],label = "Runge Kutta")
+    plt.xlabel("Tiempo (Yr)")
+    plt.ylabel("Energia")
+    plt.title("Energia vs Tiempo")
+    plt.legend ()
+    plt.savefig("Ener_runge_dt_"+str(i)+"e-3.png")
+
+    ####################################### MOMENTO ANGULAR
+    plt.figure(figsize = (5,5))
+    plt.plot(t[:max_index],angular_euler[:max_index], label = "Euler")
+    plt.xlabel("Tiempo (Yr)")
+    plt.ylabel("Momento angular")
+    plt.title("Momento angular vs Tiempo")
+    plt.legend ()
+    plt.savefig("Mome_euler_dt_"+str(i)+"e-3.png")
+
+    plt.figure(figsize = (5,4))
+    plt.plot(t[:max_index],angular_leap[:max_index], label= "Leap Frog")
+    plt.xlabel("Tiempo (Yr)")
+    plt.ylabel("Momento angular")
+    plt.title("Momento angular vs Tiempo")
+    plt.legend ()
+    plt.savefig("Mome_leap_dt_"+str(i)+"e-3.png")
+
+    plt.figure(figsize = (5,5))
+    plt.plot(t[:max_index],angular_runge[:max_index], label = "Runge Kutta")
+    plt.xlabel("Tiempo (Yr)")
+    plt.ylabel("Momento angular")
+    plt.title("Momento angular vs Tiempo")
+    plt.legend ()
+    plt.savefig("Mome_runge_dt_"+str(i)+"e-3.png")
 
     
     
