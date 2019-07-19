@@ -210,19 +210,20 @@ int main(void){
     for(int k = 1; k < 4; k++){
 
         dt = k*1e-3;
-
+            /// agregar la primera posicion ( inicial ) ...el anterior 
         x_leap[1] = x_leap[0] + dt*g_1(t0,x_leap[0],y_leap[0],vx_leap[0],vy_leap[0]);
         y_leap[1] = y_leap[0] + dt*g_2(t0,x_leap[0],y_leap[0],vx_leap[0],vy_leap[0]);
         vx_leap[1] = vx_leap[0] + dt*f_1(t0,x_leap[0],y_leap[0],vx_leap[0],vy_leap[0]);
         vy_leap[1] = vy_leap[0] + dt*f_2(t0,x_leap[0],y_leap[0],vx_leap[0],vy_leap[0]);
-
+        
+        // pasos sigueintes
         for(int i = 1; i < N; i++){ /// h = dt 
             vx_euler[i] = euler_vx(t0+i*dt,x_euler[i-1],y_euler[i-1],vx_euler[i-1],vy_euler[i-1],dt);
             vy_euler[i] = euler_vy(t0+i*dt,x_euler[i-1],y_euler[i-1],vx_euler[i-1],vy_euler[i-1],dt);
             x_euler[i] = euler_x(t0+i*dt,x_euler[i-1],y_euler[i-1],vx_euler[i-1],vy_euler[i-1],dt);
             y_euler[i] = euler_y(t0+i*dt,x_euler[i-1],y_euler[i-1],vx_euler[i-1],vy_euler[i-1],dt);
         }
-
+             
         for(int i = 2; i < N; i++){
             vx_leap[i] = leap_vx(t0+i*dt,x_leap[i-1],y_leap[i-1],vx_leap[i-1],vy_leap[i-1],vx_leap[i-2],dt);
             vy_leap[i] = leap_vy(t0+i*dt,x_leap[i-1],y_leap[i-1],vx_leap[i-1],vy_leap[i-1],vy_leap[i-2],dt);
@@ -236,16 +237,17 @@ int main(void){
             x_runge[i] = runge_kutta_x(t0+i*dt,x_runge[i-1],y_runge[i-1],vx_runge[i-1],vy_runge[i-1],dt);
             y_runge[i] = runge_kutta_y(t0+i*dt,x_runge[i-1],y_runge[i-1],vx_runge[i-1],vy_runge[i-1],dt);
         }
-
+        // abre archivo donde guarda los datos de euler
         ofstream data_euler("data_euler_dt_"+to_string(k)+"e-3.dat");    
         for(int i = 0; i < N; i++){
             data_euler << t0+i*dt << '\t' << x_euler[i] << '\t' << y_euler[i] << '\t' << vx_euler[i] << '\t' << vy_euler[i] << endl;
         }
-
+// abre archivo donde guarda los datos de leap
         ofstream data_leap("data_leap_dt_"+to_string(k)+"e-3.dat");    
         for(int i = 0; i < N; i++){
             data_leap << t0+i*dt << '\t' << x_leap[i] << '\t' << y_leap[i] << '\t' << vx_euler[i] << '\t' << vy_euler[i] << endl;
         }
+        // abre archivo donde guarda los datos de runge
 
         ofstream data_runge("data_runge_dt_"+to_string(k)+"e-3.dat");    
         for(int i = 0; i < N; i++){
