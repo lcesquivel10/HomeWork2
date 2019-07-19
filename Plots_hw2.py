@@ -62,7 +62,7 @@ for i in range(1,4): ## hacer un recorrido por los datos obtenidos
     plt.plot(x_runge[:max_index],y_runge[:max_index], label = "Runge Kutta")
     plt.xlabel("X (UA)")
     plt.ylabel("Y (UA)")
-    plt.title("X vs Y")
+    plt.title("X vs Yc")
     plt.legend()
     plt.savefig("XY_runge_dt_"+str(i)+"e-3.png")
 
