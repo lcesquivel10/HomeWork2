@@ -15,6 +15,7 @@ def propiaFFT2d(arr):
         transformada[i1]=np.array(transformada[i1])
     transformada=np.array(transformada)
     return transformada
+
 #Matriz la cual nos dará el filtro que deseamos
 def CrearMatrizFiltroFFT(cerca,coeficienteClaridad):
     matriz=[[-1 for i in range(170)] for j in range(254)]
@@ -34,8 +35,7 @@ def crearImagenHibrida(nombreImagen1,nombreIMagen2):
     #primer paso pasar las imagenes a una matriz
     imagen1 = ndimage.imread(nombreImagen1, flatten=True)
     imagen2 = ndimage.imread(nombreIMagen2, flatten=True)
-    misc.imsave("sonriendo.pdf", np.real(imagen1))
-    misc.imsave("normal.pdf", np.real(imagen2))
+    
     #segundo paso
     #calcular la transformada de fourier de ambas imagenes
     #como es una matriz de 2 dimensiones se utiliza la funcion fft2
@@ -65,7 +65,7 @@ def crearImagenHibrida(nombreImagen1,nombreIMagen2):
     #Sexto paso
     #Ya teniendo estas dos imagenes con sus filtros podemos pasar a combinarlas a una sola imagen
     imagenFinal=imagenNueva1+imagenNueva2
-    misc.imsave("ImagenFinal.pdf", np.real(imagenFinal))
+    misc.imsave("ImHybrid.pdf", np.real(imagenFinal))
     
 
 crearImagenHibrida("cara_03_grisesMF.png","cara_02_grisesMF.png")
